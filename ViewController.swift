@@ -172,10 +172,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var iphone5: UILabel!
     @IBOutlet weak var iphone6: UILabel!
     @IBOutlet weak var iphone6plus: UILabel!
+    @IBOutlet weak var backgroundClear: UITextField!
+    @IBOutlet weak var letteringClear: UITextField!
+    @IBOutlet weak var templateClear: UITextField!
+    @IBOutlet weak var clearButton: UIButton!
+    @IBOutlet weak var clearButtonBlueImage: UIImageView!
+    @IBOutlet weak var copyButtonBackground: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         renderMessage()
     }
@@ -192,9 +198,36 @@ class ViewController: UIViewController {
         return UIStatusBarStyle.Default
         
     }
+    @IBAction func helpMenu() {
+        outputBox.text = "This will be a help/settings menu in the near future."
+    }
     @IBAction func copyMessage() {
-        renderMessage()
         UIPasteboard.generalPasteboard().string = finalOutput
+    }
+    @IBAction func copyButtonBlue() {
+        copyButtonBackground.backgroundColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+    }
+    @IBAction func copyButtonGrey() {
+        copyButtonBackground.backgroundColor = UIColor(red: 0.666, green: 0.666, blue: 0.666, alpha: 1.0)
+    }
+    @IBAction func clearButtonBlue() {
+        clearButton.hidden = true
+    }
+    @IBAction func clearButtonGrey() {
+        clearButton.hidden = false
+    }
+    @IBAction func clearEverything() {
+        backgroundValue = ""
+        letteringValue = ""
+        wordToMake = ""
+        finalOutput = ""
+        outputBox.text = ""
+        backgroundClear.text = ""
+        letteringClear.text = ""
+        templateClear.text = ""
+        renderMessage()
+        clearButton.hidden = true
+        clearButtonBlueImage.hidden = true
     }
     @IBAction func getBackgroundValue (textBox: UITextField) {
         let maxLength = 1
@@ -286,6 +319,7 @@ class ViewController: UIViewController {
         } else {
             finalOutput = ""
             outputBox.text = finalOutput
+            renderMessage()
         }
     }
     func dismissKeyboard() {
@@ -315,6 +349,8 @@ class ViewController: UIViewController {
     func renderMessage(){
         finalOutput = ""
         if (wordToMake != ""){
+            clearButton.hidden = false
+            clearButtonBlueImage.hidden = false
             let wordLength = wordToMake.characters.count - 1
                 //
                 //
@@ -829,6 +865,21 @@ class ViewController: UIViewController {
                     outputBox.alwaysBounceHorizontal = true
                     lineLength = 22
                 }
+            }
+        } else {
+            clearButton.hidden = true
+            clearButtonBlueImage.hidden = true
+        }
+        if (letteringValue == ""){
+            if (backgroundValue == ""){
+                clearButton.hidden = true
+                clearButtonBlueImage.hidden = true
+            }
+        }
+        if (backgroundValue == ""){
+            if (letteringValue == ""){
+                clearButton.hidden = true
+                clearButtonBlueImage.hidden = true
             }
         }
         determineFunctionality()
