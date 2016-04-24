@@ -163,27 +163,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var outputBox: UITextView!
     //@IBOutlet weak var lettersPerLineLabel: UILabel!
     //@IBOutlet weak var lettersSizeLabel: UILabel!
-    @IBOutlet weak var labelS: UILabel!
-    @IBOutlet weak var labelM: UILabel!
-    @IBOutlet weak var labelL: UILabel!
-    @IBOutlet weak var label1: UILabel!
-    @IBOutlet weak var label2: UILabel!
-    @IBOutlet weak var label3: UILabel!
-    @IBOutlet weak var iphone5: UILabel!
-    @IBOutlet weak var iphone6: UILabel!
-    @IBOutlet weak var iphone6plus: UILabel!
-    @IBOutlet weak var backgroundClear: UITextField!
-    @IBOutlet weak var letteringClear: UITextField!
-    @IBOutlet weak var templateClear: UITextField!
-    @IBOutlet weak var clearButton: UIButton!
-    @IBOutlet weak var clearButtonBlueImage: UIImageView!
-    @IBOutlet weak var copyButtonBackground: UITextField!
+    @IBOutlet weak var smallButton: UIButton!
+    @IBOutlet weak var mediumButton: UIButton!
+    @IBOutlet weak var largeButton: UIButton!
+    @IBOutlet weak var oneLetterButton: UIButton!
+    @IBOutlet weak var twoLetterButton: UIButton!
+    @IBOutlet weak var inputTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         renderMessage()
+        mediumButton.setImage(UIImage(named: "MediumSelected"), forState: UIControlState.Normal)
+        oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+        inputTextField.becomeFirstResponder()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -198,23 +192,8 @@ class ViewController: UIViewController {
         return UIStatusBarStyle.Default
         
     }
-    @IBAction func helpMenu() {
-        outputBox.text = "This will be a help/settings menu in the near future."
-    }
     @IBAction func copyMessage() {
         UIPasteboard.generalPasteboard().string = finalOutput
-    }
-    @IBAction func copyButtonBlue() {
-        copyButtonBackground.backgroundColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-    }
-    @IBAction func copyButtonGrey() {
-        copyButtonBackground.backgroundColor = UIColor(red: 0.666, green: 0.666, blue: 0.666, alpha: 1.0)
-    }
-    @IBAction func clearButtonBlue() {
-        clearButton.hidden = true
-    }
-    @IBAction func clearButtonGrey() {
-        clearButton.hidden = false
     }
     @IBAction func clearEverything() {
         backgroundValue = ""
@@ -222,12 +201,7 @@ class ViewController: UIViewController {
         wordToMake = ""
         finalOutput = ""
         outputBox.text = ""
-        backgroundClear.text = ""
-        letteringClear.text = ""
-        templateClear.text = ""
         renderMessage()
-        clearButton.hidden = true
-        clearButtonBlueImage.hidden = true
     }
     @IBAction func getBackgroundValue (textBox: UITextField) {
         let maxLength = 1
@@ -246,48 +220,53 @@ class ViewController: UIViewController {
         renderMessage()
     }
     @IBAction func getLettersPerLine (slider: UISlider){
-        let lettersPerLineNew = Int(round(slider.value))
-        if (lettersPerLineNew != lettersPerLine){
-            lettersPerLine = lettersPerLineNew
-            switch lettersPerLine {
-            case 1:
-                label1.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label2.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label3.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            case 2:
-                label2.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label1.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label3.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            case 3:
-                label3.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label1.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label2.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            default:
-                label1.text = ("Error in switch case!")
-            }
+        print ("Error")
+    }
+    @IBAction func smallSizeSelected (button: UIButton){
+        let newLettersSize = 1
+        smallButton.setImage(UIImage(named: "SmallSelected"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumDefault"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
             renderMessage()
         }
     }
-    @IBAction func getSizeOfLetters (slider: UISlider){
-        let lettersSizeNew = Int(round(slider.value))
-        if (lettersSizeNew != lettersSize){
-            lettersSize = lettersSizeNew
-            switch lettersSize {
-                case 1:
-                    labelS.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelM.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelL.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                case 2:
-                    labelM.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelS.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelL.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                case 3:
-                    labelL.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelS.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelM.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                default:
-                    labelS.text = ("Error in switch case!")
-            }
+    @IBAction func mediumSizeSelected (button: UIButton){
+        let newLettersSize = 2
+        smallButton.setImage(UIImage(named: "SmallDefault"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumSelected"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
+            renderMessage()
+        }
+    }
+    @IBAction func largeSizeSelected (button: UIButton){
+        let newLettersSize = 3
+        smallButton.setImage(UIImage(named: "SmallDefault"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumDefault"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeSelected"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
+            renderMessage()
+        }
+    }
+    @IBAction func oneLetterPerLineSelected (button: UIButton){
+        let newLettersPerLine = 1
+        oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+        twoLetterButton.setImage(UIImage(named: "TwoDefault"), forState: UIControlState.Normal)
+        if (newLettersPerLine != lettersPerLine){
+            lettersPerLine = newLettersPerLine
+            renderMessage()
+        }
+    }
+    @IBAction func twoLetterPerLineSelected (button: UIButton){
+        let newLettersPerLine = 2
+        twoLetterButton.setImage(UIImage(named: "TwoSelected"), forState: UIControlState.Normal)
+        oneLetterButton.setImage(UIImage(named: "OneDefault"), forState: UIControlState.Normal)
+        if (newLettersPerLine != lettersPerLine){
+            lettersPerLine = newLettersPerLine
             renderMessage()
         }
     }
@@ -331,26 +310,26 @@ class ViewController: UIViewController {
     }
     func determineFunctionality(){
         if (lineLength > 8){
-            iphone5.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 5/5s")
         } else {
-            iphone5.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 5/5s")
         }
         if (lineLength > 11){
-            iphone6.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 6/6s")
         } else {
-            iphone6.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 6/6s")
         }
         if (lineLength > 13){
-            iphone6plus.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 6+/6s+")
         } else {
-            iphone6plus.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 6+/6s+")
         }
     }
     func renderMessage(){
         finalOutput = ""
         if (wordToMake != ""){
-            clearButton.hidden = false
-            clearButtonBlueImage.hidden = false
+            //clearButton.hidden = false
+            //clearButtonBlueImage.hidden = false
             let wordLength = wordToMake.characters.count - 1
                 //
                 //
@@ -866,22 +845,22 @@ class ViewController: UIViewController {
                     lineLength = 22
                 }
             }
-        } else {
-            clearButton.hidden = true
-            clearButtonBlueImage.hidden = true
-        }
-        if (letteringValue == ""){
-            if (backgroundValue == ""){
-                clearButton.hidden = true
-                clearButtonBlueImage.hidden = true
-            }
-        }
-        if (backgroundValue == ""){
-            if (letteringValue == ""){
-                clearButton.hidden = true
-                clearButtonBlueImage.hidden = true
-            }
-        }
+        } //else {
+            //clearButton.hidden = true
+            //clearButtonBlueImage.hidden = true
+        //}
+        //if (letteringValue == ""){
+            //if (backgroundValue == ""){
+                //clearButton.hidden = true
+                //clearButtonBlueImage.hidden = true
+            //}
+        //}
+        //if (backgroundValue == ""){
+            //if (letteringValue == ""){
+                //clearButton.hidden = true
+                //clearButtonBlueImage.hidden = true
+            //}
+        //}
         determineFunctionality()
     }
 }
