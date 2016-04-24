@@ -169,6 +169,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var oneLetterButton: UIButton!
     @IBOutlet weak var twoLetterButton: UIButton!
     @IBOutlet weak var inputTextField: UITextField!
+    @IBOutlet weak var oneLetterView: UIView!
+    @IBOutlet weak var twoLetterView: UIView!
+    @IBOutlet weak var oneLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var twoLeftConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -229,6 +233,7 @@ class ViewController: UIViewController {
         largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
         if (newLettersSize != lettersSize){
             lettersSize = newLettersSize
+            animateLettersPerLineSelector()
             renderMessage()
         }
     }
@@ -239,6 +244,7 @@ class ViewController: UIViewController {
         largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
         if (newLettersSize != lettersSize){
             lettersSize = newLettersSize
+            animateLettersPerLineSelector()
             renderMessage()
         }
     }
@@ -249,6 +255,10 @@ class ViewController: UIViewController {
         largeButton.setImage(UIImage(named: "LargeSelected"), forState: UIControlState.Normal)
         if (newLettersSize != lettersSize){
             lettersSize = newLettersSize
+            lettersPerLine = 1
+            oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+            twoLetterButton.setImage(UIImage(named: "TwoDefault"), forState: UIControlState.Normal)
+            animateLettersPerLineSelector()
             renderMessage()
         }
     }
@@ -323,6 +333,34 @@ class ViewController: UIViewController {
             print("Won't work on iPhone 6+/6s+")
         } else {
             print("Will work on iPhone 6+/6s+")
+        }
+    }
+    func animateLettersPerLineSelector() {
+        if (lettersSize == 1){
+            self.oneLeftConstraint.constant = 94
+            self.twoLeftConstraint.constant = 189
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 2){
+            self.oneLeftConstraint.constant = 113
+            self.twoLeftConstraint.constant = 227
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 3){
+            self.oneLeftConstraint.constant = 132
+            self.twoLeftConstraint.constant = 132
+            twoLetterButton.enabled = false
+        }
+        UIView.animateWithDuration(0.4, delay: 0.1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.2,
+                                   options: [], animations: {
+                self.oneLetterView.layoutIfNeeded()
+                                    if (self.twoLetterButton.enabled == true){
+                                        self.twoLetterView.layoutIfNeeded()
+                                    }
+        },completion:nil)
+        if (self.twoLetterButton.enabled == false){
+            UIView.animateWithDuration(0.4, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5,
+                                       options: [], animations: {
+                                        self.twoLetterView.layoutIfNeeded()
+                },completion:nil)
         }
     }
     func renderMessage(){
