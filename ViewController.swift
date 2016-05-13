@@ -7,9 +7,9 @@
 //
 
 import UIKit
-var backgroundValue = "🌚"
-var letteringValue = "🌎"
-var wordToMake = "EMOJIFY!"
+var backgroundValue = "☁️"
+var letteringValue = "😜"
+var wordToMake = ""
 var finalOutput = ""
 var lettersPerLine = 1
 var lettersSize = 2
@@ -163,21 +163,36 @@ class ViewController: UIViewController {
     @IBOutlet weak var outputBox: UITextView!
     //@IBOutlet weak var lettersPerLineLabel: UILabel!
     //@IBOutlet weak var lettersSizeLabel: UILabel!
-    @IBOutlet weak var labelS: UILabel!
-    @IBOutlet weak var labelM: UILabel!
-    @IBOutlet weak var labelL: UILabel!
-    @IBOutlet weak var label1: UILabel!
-    @IBOutlet weak var label2: UILabel!
-    @IBOutlet weak var label3: UILabel!
-    @IBOutlet weak var iphone5: UILabel!
-    @IBOutlet weak var iphone6: UILabel!
-    @IBOutlet weak var iphone6plus: UILabel!
+    @IBOutlet weak var smallButton: UIButton!
+    @IBOutlet weak var mediumButton: UIButton!
+    @IBOutlet weak var largeButton: UIButton!
+    @IBOutlet weak var oneLetterButton: UIButton!
+    @IBOutlet weak var twoLetterButton: UIButton!
+    @IBOutlet weak var inputTextField: UITextField!
+    @IBOutlet weak var backgroundTextField: UITextField!
+    @IBOutlet weak var letteringTextField: UITextField!
+    @IBOutlet weak var outputBoxView: UIView!
+    @IBOutlet weak var oneLetterView: UIView!
+    @IBOutlet weak var twoLetterView: UIView!
+    @IBOutlet weak var smallLetterView: UIView!
+    @IBOutlet weak var mediumLetterView: UIView!
+    @IBOutlet weak var largeLetterView: UIView!
+    @IBOutlet weak var copyButtonShading: UIImageView!
+    @IBOutlet weak var outputLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var oneLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var twoLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var smallLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mediumLeftConstraint: NSLayoutConstraint!
+    @IBOutlet weak var largeLeftConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         renderMessage()
+        mediumButton.setImage(UIImage(named: "MediumSelected"), forState: UIControlState.Normal)
+        oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+        inputTextField.becomeFirstResponder()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -193,8 +208,15 @@ class ViewController: UIViewController {
         
     }
     @IBAction func copyMessage() {
-        renderMessage()
         UIPasteboard.generalPasteboard().string = finalOutput
+    }
+    @IBAction func clearEverything() {
+        backgroundValue = ""
+        letteringValue = ""
+        wordToMake = ""
+        finalOutput = ""
+        outputBox.text = ""
+        renderMessage()
     }
     @IBAction func getBackgroundValue (textBox: UITextField) {
         let maxLength = 1
@@ -213,48 +235,59 @@ class ViewController: UIViewController {
         renderMessage()
     }
     @IBAction func getLettersPerLine (slider: UISlider){
-        let lettersPerLineNew = Int(round(slider.value))
-        if (lettersPerLineNew != lettersPerLine){
-            lettersPerLine = lettersPerLineNew
-            switch lettersPerLine {
-            case 1:
-                label1.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label2.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label3.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            case 2:
-                label2.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label1.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label3.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            case 3:
-                label3.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                label1.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                label2.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-            default:
-                label1.text = ("Error in switch case!")
-            }
+        print ("Error")
+    }
+    @IBAction func smallSizeSelected (button: UIButton){
+        let newLettersSize = 1
+        smallButton.setImage(UIImage(named: "SmallSelected"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumDefault"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
+            animateLettersPerLineSelector()
             renderMessage()
         }
     }
-    @IBAction func getSizeOfLetters (slider: UISlider){
-        let lettersSizeNew = Int(round(slider.value))
-        if (lettersSizeNew != lettersSize){
-            lettersSize = lettersSizeNew
-            switch lettersSize {
-                case 1:
-                    labelS.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelM.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelL.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                case 2:
-                    labelM.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelS.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelL.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                case 3:
-                    labelL.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
-                    labelS.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                    labelM.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
-                default:
-                    labelS.text = ("Error in switch case!")
-            }
+    @IBAction func mediumSizeSelected (button: UIButton){
+        let newLettersSize = 2
+        smallButton.setImage(UIImage(named: "SmallDefault"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumSelected"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeDefault"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
+            animateLettersPerLineSelector()
+            renderMessage()
+        }
+    }
+    @IBAction func largeSizeSelected (button: UIButton){
+        let newLettersSize = 3
+        smallButton.setImage(UIImage(named: "SmallDefault"), forState: UIControlState.Normal)
+        mediumButton.setImage(UIImage(named: "MediumDefault"), forState: UIControlState.Normal)
+        largeButton.setImage(UIImage(named: "LargeSelected"), forState: UIControlState.Normal)
+        if (newLettersSize != lettersSize){
+            lettersSize = newLettersSize
+            lettersPerLine = 1
+            oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+            twoLetterButton.setImage(UIImage(named: "TwoDefault"), forState: UIControlState.Normal)
+            animateLettersPerLineSelector()
+            renderMessage()
+        }
+    }
+    @IBAction func oneLetterPerLineSelected (button: UIButton){
+        let newLettersPerLine = 1
+        oneLetterButton.setImage(UIImage(named: "OneSelected"), forState: UIControlState.Normal)
+        twoLetterButton.setImage(UIImage(named: "TwoDefault"), forState: UIControlState.Normal)
+        if (newLettersPerLine != lettersPerLine){
+            lettersPerLine = newLettersPerLine
+            renderMessage()
+        }
+    }
+    @IBAction func twoLetterPerLineSelected (button: UIButton){
+        let newLettersPerLine = 2
+        twoLetterButton.setImage(UIImage(named: "TwoSelected"), forState: UIControlState.Normal)
+        oneLetterButton.setImage(UIImage(named: "OneDefault"), forState: UIControlState.Normal)
+        if (newLettersPerLine != lettersPerLine){
+            lettersPerLine = newLettersPerLine
             renderMessage()
         }
     }
@@ -278,6 +311,8 @@ class ViewController: UIViewController {
                 }
             }
             if wordIsOkay {
+                animateButtonsOnScreen()
+                copyButtonShading.hidden = true
                 renderMessage()
             }
             else {
@@ -285,11 +320,35 @@ class ViewController: UIViewController {
             }
         } else {
             finalOutput = ""
-            outputBox.text = finalOutput
+            // set output.text to finalOutput in the animation, so it will slide off before dissapearing
+            animateButtonsOffScreen()
+            copyButtonShading.hidden = false
+            renderMessage()
         }
+    }
+    @IBAction func hideShowOutputBox (button: UIButton!){
+        if (outputLeftConstraint.constant == -280){
+            self.outputLeftConstraint.constant = 0
+        } else {
+            self.outputLeftConstraint.constant = -280
+        }
+        UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.2,
+                                   options: [], animations: {
+                                    self.outputBoxView.layoutIfNeeded()
+            },completion: nil )
     }
     func dismissKeyboard() {
         view.endEditing(true)
+    }
+    func textFieldShouldReturn(textField: UITextField!) -> Bool {   //delegate method
+        if (inputTextField.isFirstResponder() == true){
+            backgroundTextField.becomeFirstResponder()
+        } else if (backgroundTextField.isFirstResponder() == true){
+            letteringTextField.becomeFirstResponder()
+        } else if (letteringTextField.isFirstResponder() == true){
+            letteringTextField.resignFirstResponder()
+        }
+        return true
     }
     func alertMessage(){
         finalOutput = "Character(s) you entered are \r\n not currently supported. Sorry :)"
@@ -297,24 +356,112 @@ class ViewController: UIViewController {
     }
     func determineFunctionality(){
         if (lineLength > 8){
-            iphone5.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 5/5s")
         } else {
-            iphone5.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 5/5s")
         }
         if (lineLength > 11){
-            iphone6.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 6/6s")
         } else {
-            iphone6.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 6/6s")
         }
         if (lineLength > 13){
-            iphone6plus.textColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1)
+            print("Won't work on iPhone 6+/6s+")
         } else {
-            iphone6plus.textColor = UIColor(red: 0.055, green: 0.478, blue: 1, alpha: 1.0)
+            print("Will work on iPhone 6+/6s+")
+        }
+    }
+    func animateLettersPerLineSelector() {
+        if (lettersSize == 1){
+            self.oneLeftConstraint.constant = 94
+            self.twoLeftConstraint.constant = 189
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 2){
+            self.oneLeftConstraint.constant = 113
+            self.twoLeftConstraint.constant = 227
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 3){
+            self.oneLeftConstraint.constant = 132
+            self.twoLeftConstraint.constant = 132
+            twoLetterButton.enabled = false
+        }
+        UIView.animateWithDuration(0.4, delay: 0.1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.2,
+                                   options: [], animations: {
+            self.oneLetterView.layoutIfNeeded()
+            if (self.twoLetterButton.enabled == true){
+                self.twoLetterView.layoutIfNeeded()
+            }
+        },completion:nil)
+        if (self.twoLetterButton.enabled == false){
+            UIView.animateWithDuration(0.4, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5,
+                                       options: [], animations: {
+            self.twoLetterView.layoutIfNeeded()
+        },completion:nil)
+        }
+    }
+    func animateButtonsOffScreen() {
+        self.outputLeftConstraint.constant = -280
+        self.oneLeftConstraint.constant = -50
+        self.twoLeftConstraint.constant = -50
+        self.smallLeftConstraint.constant = -50
+        self.mediumLeftConstraint.constant = -50
+        self.largeLeftConstraint.constant = -50
+        UIView.animateWithDuration(0.4, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.2,
+                                   options: [], animations: {
+                                    self.oneLetterView.layoutIfNeeded()
+                                    self.twoLetterView.layoutIfNeeded()
+                                    self.smallLetterView.layoutIfNeeded()
+                                    self.mediumLetterView.layoutIfNeeded()
+                                    self.largeLetterView.layoutIfNeeded()
+                                    self.outputBoxView.layoutIfNeeded()
+            },completion: {finished in
+                self.outputBox.text = finalOutput
+        })
+    }
+    func animateButtonsOnScreen() {
+        if (lettersSize == 1){
+            self.oneLeftConstraint.constant = 94
+            self.twoLeftConstraint.constant = 189
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 2){
+            self.oneLeftConstraint.constant = 113
+            self.twoLeftConstraint.constant = 227
+            twoLetterButton.enabled = true
+        } else if (lettersSize == 3){
+            self.oneLeftConstraint.constant = 132
+            self.twoLeftConstraint.constant = 132
+            twoLetterButton.enabled = false
+        }
+        self.outputLeftConstraint.constant = 0
+        self.smallLeftConstraint.constant = 0
+        self.mediumLeftConstraint.constant = 33
+        self.largeLeftConstraint.constant = 66
+        UIView.animateWithDuration(0.6, delay: 0.2, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.2,
+                                   options: [], animations: {
+                                    self.oneLetterView.layoutIfNeeded()
+                                    self.smallLetterView.layoutIfNeeded()
+                                    self.mediumLetterView.layoutIfNeeded()
+                                    self.largeLetterView.layoutIfNeeded()
+                                    if (self.twoLetterButton.enabled == true){
+                                        self.twoLetterView.layoutIfNeeded()
+                                    }
+            },completion:nil)
+        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.4,
+                                   options: [], animations: {
+                                    self.outputBoxView.layoutIfNeeded()
+            },completion:nil)
+        if (self.twoLetterButton.enabled == false){
+            UIView.animateWithDuration(0.4, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.3,
+                                       options: [], animations: {
+                                        self.twoLetterView.layoutIfNeeded()
+                },completion:nil)
         }
     }
     func renderMessage(){
         finalOutput = ""
         if (wordToMake != ""){
+            //clearButton.hidden = false
+            //clearButtonBlueImage.hidden = false
             let wordLength = wordToMake.characters.count - 1
                 //
                 //
@@ -830,7 +977,22 @@ class ViewController: UIViewController {
                     lineLength = 22
                 }
             }
-        }
+        } //else {
+            //clearButton.hidden = true
+            //clearButtonBlueImage.hidden = true
+        //}
+        //if (letteringValue == ""){
+            //if (backgroundValue == ""){
+                //clearButton.hidden = true
+                //clearButtonBlueImage.hidden = true
+            //}
+        //}
+        //if (backgroundValue == ""){
+            //if (letteringValue == ""){
+                //clearButton.hidden = true
+                //clearButtonBlueImage.hidden = true
+            //}
+        //}
         determineFunctionality()
     }
 }
